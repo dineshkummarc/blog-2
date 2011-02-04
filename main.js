@@ -2,10 +2,12 @@
 	this.Blog = HTTPApplication.extend();
 
 	Blog.prototype.init = function () {
-		Blog.libPath = this.path + '/lib';
+		Blog.path = this.path;
+		this.settings = JSON.parse(readFile(this.path + '/conf/settings.json'));
+
 		if (!Blog.Database) {
 			load(this.path + '/lib/database.js');
-			print(Blog.MySQL.getConnection('root'));
+			print(Blog.MySQL.getConnection(this.settings.db.username, this.settings.db.password, this.settings.db.database));
 		}
 	};
 
