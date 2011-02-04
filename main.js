@@ -18,6 +18,8 @@
 			HTTPServer.serveFile(request, output, file);
 			return;
 		}
+
+		this.sendResponseHeaders(404, {}, output, 0);
 	};
 
 	HTTPServer.addApplication(Blog);
