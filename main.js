@@ -1,5 +1,14 @@
 (function () {
-	var Blog = HTTPApplication.extend();
+	this.Blog = HTTPApplication.extend();
+
+	Blog.prototype.init = function () {
+		if (!Blog.Database || !Blog.MySQL) {
+			Blog.libPath = this.path + '/lib';
+			load(this.path + '/lib/mysql.js');
+			load(this.path + '/lib/database.js');
+			print(Blog.MySQL.getConnection('root'));
+		}
+	};
 
 	Blog.prototype.processRequest = function (request, client, input, output) {
 		/* Serve static file, if it exists */
