@@ -2,9 +2,8 @@
 	this.Blog = HTTPApplication.extend();
 
 	Blog.prototype.init = function () {
-		if (!Blog.Database || !Blog.MySQL) {
-			Blog.libPath = this.path + '/lib';
-			load(this.path + '/lib/mysql.js');
+		Blog.libPath = this.path + '/lib';
+		if (!Blog.Database) {
 			load(this.path + '/lib/database.js');
 			print(Blog.MySQL.getConnection('root'));
 		}
