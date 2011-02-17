@@ -27,6 +27,10 @@
 			return;
 		}
 
+		if (/^\/posts.json$/.test(request.resource)) {
+			this.serveJSON(output);
+		}
+
 		/* Serve static file, if it exists */
 		var file = new File(this.getFilePath('/httpdocs' + request.resource));
 		if (file.exists()) {
@@ -40,6 +44,27 @@
 	Blog.prototype.getDBConnection = function () {
 		return Blog.MySQL.getConnection(this.settings.db.username, this.settings.db.password, this.settings.db.database);
 	};
+
+	Blog.prototype.serveJSON = function (output) {
+		var result, rs, stmt, connection = this.getDBConnection();
+		stmt = connection.prepareStatement('SELECT title, html, `date` FROM posts ORDER BY `date` DESC');
+		rs = stmt.executeQuery();
+		result = [];
+		
+		while (rs.next()) {
+			result.push({
+				title: ('' + rs.getString(1)),
+				message: ('' + rs.getString(2)),
+				date: ('' + rs.getString(3))
+			});
+		}
+		connection.close();
+
+		result = JSON.stringify(result);
+		this.sendResponseHeaders(200, {'content-type': 'application/json'}, output, result.length);
+		output.print(result);
+	};
+
 
 	Blog.prototype.processPost = function (request, output) {
 		var connection, stmt, data = request.data || {};
