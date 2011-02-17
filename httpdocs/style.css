@@ -37,3 +37,8 @@ h1 {
 	margin: 0;
 	padding: 0;
 }
+
+.post {
+	margin: 10px 0;
+	border-bottom: 1px #ccc solid;
+}
