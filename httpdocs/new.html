@@ -3,6 +3,8 @@
 <head>
 <title>JS Blog</title>
 <link rel="stylesheet" type="text/css" href="/style.css"/>
+<script type="text/javascript" src="/js/showdown.min.js"></script>
+<script type="text/javascript" src="/js/markdownToHtml.js"></script>
 </head>
 <body>
 <h1>JSBlog - written in JavaScript on both client and server</h1>
@@ -18,6 +20,20 @@
 <label for="title">Message:</label>
 <textarea name="message" id="message" rows="16" cols="32">
 </textarea>
+<label for="preview">Preview:</label>
+<div id="preview">
+</div>
 </form>
+<script type="text/javascript">
+(function () {
+	var input, preview;
+	input = document.getElementById('message');
+	preview = document.getElementById('preview');
+
+	input.onkeydown = input.onkeyup = function () {
+		preview.innerHTML = markdownToHtml(input.value);
+	};
+}());
+</script>
 </body>
 </html>

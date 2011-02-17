@@ -9,6 +9,11 @@
 			load(this.path + '/lib/database.js');
 			print(Blog.MySQL.getConnection(this.settings.db.username, this.settings.db.password, this.settings.db.database));
 		}
+
+		if (typeof markdownToHtml === 'undefined') {
+			load(this.path + '/httpdocs/js/showdown.js');
+			load(this.path + '/httpdocs/js/markdownToHtml.js');
+		}
 	};
 
 	Blog.prototype.processRequest = function (request, client, input, output) {
