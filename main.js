@@ -29,6 +29,7 @@
 
 		if (/^\/posts.json$/.test(request.resource)) {
 			this.serveJSON(output);
+			return;
 		}
 
 		/* Serve static file, if it exists */
