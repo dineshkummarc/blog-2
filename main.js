@@ -11,7 +11,7 @@
 
 		if (typeof markdownToHtml === 'undefined') {
 			load(this.path + '/httpdocs/js/showdown.js');
-			load(this.path + '/httpdocs/js/markdownToHtml.js');
+			load(this.path + '/httpdocs/js/markdown.js');
 		}
 	};
 
