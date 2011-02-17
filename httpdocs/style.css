@@ -1,0 +1,36 @@
+body {
+	font: 16px calibri, helvetica, tahoma, verdana, serif;
+}
+
+.clear {
+	clear: both;
+}
+
+.right {
+	float: right;
+	display: block;
+}
+
+label {
+	display: block;
+	clear: both;
+}
+
+input, textarea {
+	display: block;
+	float: left;
+	width: 350px;
+	margin: 10px 0;
+}
+
+textarea {
+	height: 200px;
+}
+
+h1 {
+	font-size: 18px;
+	display: block;
+	float: left;
+	margin: 0;
+	padding: 0;
+}

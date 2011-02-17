@@ -14,6 +14,10 @@
 	Blog.prototype.processRequest = function (request, client, input, output) {
 		request.resource = request.resource === '/' && '/index.html' || request.resource;
 
+		if (/^\/new\/?$/.test(request.resource)) {
+			request.resource = '/new.html';
+		}
+
 		/* Serve static file, if it exists */
 		var file = new File(this.getFilePath('/httpdocs' + request.resource));
 		if (file.exists()) {
