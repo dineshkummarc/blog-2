@@ -17,10 +17,13 @@ label {
 }
 
 input, textarea {
+	margin: 10px 0;
+}
+
+.text {
 	display: block;
 	float: left;
 	width: 350px;
-	margin: 10px 0;
 }
 
 textarea {
