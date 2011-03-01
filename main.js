@@ -19,13 +19,11 @@
 
 	Blog.prototype.processRequest = function (request, client, input, output) {
 		if (request.resource === '/') {
-			var posts, view, connection = this.getDBConnection();
+			var posts, connection = this.getDBConnection();
 			posts = Blog.Database.getPosts(connection);
-			view = this.bufferView('index', output, { posts: posts });
 			connection.close();
 
-			this.sendResponseHeaders(200, {}, output, view.length);
-			output.print(view);
+			this.renderView('index', output, { posts: posts });
 			return;
 		}
 
