@@ -13,10 +13,21 @@
 			load(this.path + '/httpdocs/js/showdown.js');
 			load(this.path + '/httpdocs/js/markdown.js');
 		}
+
+		this.addView('index', this.path + '/views/index.js');
 	};
 
 	Blog.prototype.processRequest = function (request, client, input, output) {
-		request.resource = request.resource === '/' && '/index.html' || request.resource;
+		if (request.resource === '/') {
+			var posts, view, connection = this.getDBConnection();
+			posts = Blog.Database.getPosts(connection);
+			view = this.bufferView('index', output, { posts: posts });
+			connection.close();
+
+			this.sendResponseHeaders(200, {}, output, view.length);
+			output.print(view);
+			return;
+		}
 
 		if (/^\/new\/?$/.test(request.resource)) {
 			request.resource = '/new.html';
@@ -24,11 +35,6 @@
 
 		if (/^\/post\/?$/.test(request.resource)) {
 			this.processPost(request, output);
-			return;
-		}
-
-		if (/^\/posts.json$/.test(request.resource)) {
-			this.serveJSON(output);
 			return;
 		}
 
@@ -43,29 +49,8 @@
 	};
 
 	Blog.prototype.getDBConnection = function () {
-		return Blog.MySQL.getConnection(this.settings.db.username, this.settings.db.password, this.settings.db.database);
+		return Blog.Database.getConnection(this.settings.db.username, this.settings.db.password, this.settings.db.database);
 	};
-
-	Blog.prototype.serveJSON = function (output) {
-		var result, rs, stmt, connection = this.getDBConnection();
-		stmt = connection.prepareStatement('SELECT title, html, `date` FROM posts ORDER BY `date` DESC');
-		rs = stmt.executeQuery();
-		result = [];
-		
-		while (rs.next()) {
-			result.push({
-				title: ('' + rs.getString(1)),
-				message: ('' + rs.getString(2)),
-				date: ('' + rs.getString(3))
-			});
-		}
-		connection.close();
-
-		result = JSON.stringify(result);
-		this.sendResponseHeaders(200, {'content-type': 'application/json'}, output, result.length);
-		output.print(result);
-	};
-
 
 	Blog.prototype.processPost = function (request, output) {
 		var connection, stmt, data = request.data || {};
