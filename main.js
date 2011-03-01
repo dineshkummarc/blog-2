@@ -14,7 +14,7 @@
 			load(this.path + '/httpdocs/js/markdown.js');
 		}
 
-		this.addView('index', this.path + '/views/index.js');
+		this.addView('index', this.path + '/views/index.jsv');
 	};
 
 	Blog.prototype.processRequest = function (request, client, input, output) {
