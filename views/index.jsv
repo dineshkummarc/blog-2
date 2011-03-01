@@ -14,7 +14,7 @@
 <div class="post">
 <h2><? output.print(post.title); ?></h2>
 <div><? output.print(post.message); ?></div>
-</div>
 <? }); ?>
+</div>
 </body>
 </html>
