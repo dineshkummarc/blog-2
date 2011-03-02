@@ -2,12 +2,8 @@
 	this.Blog = HTTPApplication.extend();
 
 	Blog.prototype.init = function () {
-		Blog.path = this.path;
+		load(this.path + '/lib/database.js');
 		this.settings = JSON.parse(readFile(this.path + '/conf/settings.json'));
-
-		if (!Blog.Database) {
-			load(this.path + '/lib/database.js');
-		}
 
 		if (typeof markdownToHtml === 'undefined') {
 			load(this.path + '/httpdocs/js/showdown.js');
@@ -19,9 +15,9 @@
 
 	Blog.prototype.processRequest = function (request, client, input, output) {
 		if (request.resource === '/') {
-			var posts, connection = this.getDBConnection();
-			posts = Blog.Database.getPosts(connection);
-			connection.close();
+			var posts, db = new Blog.DB(this.settings);
+			posts = db.getPosts();
+			db.close();
 
 			this.renderView('index', output, { posts: posts });
 			return;
@@ -46,21 +42,16 @@
 		this.sendResponseHeaders(404, {}, output, 0);
 	};
 
-	Blog.prototype.getDBConnection = function () {
-		return Blog.Database.getConnection(this.settings.db.username, this.settings.db.password, this.settings.db.database);
-	};
 
 	Blog.prototype.processPost = function (request, output) {
-		var connection, stmt, data = request.data || {};
+		var db, data = request.data || {};
+
 		if (/post/i.test(request.method) && data.title && data.message) {
-			connection = this.getDBConnection();
-			stmt = connection.prepareStatement('INSERT INTO posts (`title`, `markdown`, `html`) VALUES(?, ?, ?)');
-			stmt.setString(1, data.title);
-			stmt.setString(2, data.message);
-			stmt.setString(3, markdownToHtml(data.message));
-			stmt.executeUpdate();
-			stmt.close();
+			db = new Blog.DB(this.settings);
+			db.addPost(data.title, data.message);
+			db.close();
 		}
+
 		this.sendResponseHeaders(302, {location: '/'}, output, 0);
 	};
 
