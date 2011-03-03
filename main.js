@@ -11,35 +11,37 @@
 		}
 
 		this.addView('index', this.path + '/views/index.jsv');
-	};
 
-	Blog.prototype.processRequest = function (request, client, input, output) {
-		if (request.resource === '/') {
+		this.addRoute(/^\/$/, function (request, output) {
 			var posts, db = new Blog.DB(this.settings);
 			posts = db.getPosts();
 			db.close();
 
 			this.renderView('index', output, { posts: posts });
-			return;
-		}
+		});
 
-		if (/^\/new\/?$/.test(request.resource)) {
+		this.addRoute(/^\/new\/?$/, function (request, output) {
 			request.resource = '/new.html';
-		}
+			return false;
+		});
 
-		if (/^\/post\/?$/.test(request.resource)) {
+		this.addRoute(/^\/post\/?$/, function (request, output) {
 			this.processPost(request, output);
-			return;
+		});
+	};
+
+	Blog.prototype.processRequest = function (request, client, input, output) {
+		if (!this.route(request, output)) {
+			/* Serve static file, if it exists */
+			var file = new File(this.getFilePath('/httpdocs' + request.resource));
+			if (file.exists()) {
+				HTTPServer.serveFile(request, output, file);
+				return;
+			}
+
+			this.sendResponseHeaders(404, {}, output, 0);
 		}
 
-		/* Serve static file, if it exists */
-		var file = new File(this.getFilePath('/httpdocs' + request.resource));
-		if (file.exists()) {
-			HTTPServer.serveFile(request, output, file);
-			return;
-		}
-
-		this.sendResponseHeaders(404, {}, output, 0);
 	};
 
 
