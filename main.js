@@ -16,8 +16,7 @@
 			var posts, db = new Blog.DB(this.settings);
 			posts = db.getPosts();
 			db.close();
-
-			this.renderView('index', request.output, { posts: posts });
+			this.renderView('index', request, { posts: posts });
 		});
 
 		this.addRoute(/^\/new\/?$/, function (request) {
@@ -39,7 +38,7 @@
 				return;
 			}
 
-			this.sendResponseHeaders(404, {}, request.output, 0);
+			this.sendResponseHeaders(404, {}, request, 0);
 		}
 	};
 
@@ -53,7 +52,7 @@
 			db.close();
 		}
 
-		this.sendResponseHeaders(302, {location: '/'}, request.output, 0);
+		this.sendResponseHeaders(302, {location: '/'}, request, 0);
 	};
 
 	HTTPServer.addApplication(Blog);
