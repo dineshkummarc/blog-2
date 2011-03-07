@@ -10,7 +10,8 @@
 			load(this.path + '/httpdocs/js/markdown.js');
 		}
 
-		this.addView('index', this.path + '/views/index.jsv');
+		this.addView('index', '/views/index.jsv');
+		this.addView('post', '/views/post.jsv');
 
 		this.addRoute(/^\/$/, function (request) {
 			var posts, db = new Blog.DB(this.settings);
