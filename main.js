@@ -11,7 +11,6 @@
 		}
 
 		this.addView('index', '/views/index.jsv');
-		this.addView('post', '/views/post.jsv');
 
 		this.addRoute(/^\/$/, function (request) {
 			var posts, db = new Blog.DB(this.settings);
@@ -35,7 +34,7 @@
 			/* Serve static file, if it exists */
 			var file = new File(this.getFilePath('/httpdocs' + request.resource));
 			if (file.exists()) {
-				HTTPServer.serveFile(request, file);
+				this.serveFile(request, file);
 				return;
 			}
 
