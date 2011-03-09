@@ -1,28 +1,28 @@
 <%
 <html>
-<head>
-<title>JS Blog</title>
-<link rel="stylesheet" type="text/css" href="/style.css"/>
-</head>
-<body>
-<h1>JSBlog - written in JavaScript on both client and server</h1>
-<div class="right">
-<a href="/new">New Post</a>
-</div>
-<div class="clear"></div>
-<div id="posts">
+  <head>
+    <title>JS Blog</title>
+    <link rel="stylesheet" type="text/css" href="/style.css"/>
+  </head>
+  <body>
+    <h1>JSBlog - written in JavaScript on both client and server</h1>
+    <div class="right">
+      <a href="/new">New Post</a>
+    </div>
+    <div class="clear"></div>
+    <div id="posts">
 %>
 
 context.posts.forEach (post) -> 
-	<%
-<div class="post">
-<h2>#{post.title}</h2>
-<div>#{post.message}</div>
-</div>
-	%>
+  <%
+      <div class="post">
+        <h2>#{post.title}</h2>
+        <div>#{post.message}</div>
+      </div>
+  %>
 
 <%
-</div>
-</body>
+    </div>
+  </body>
 </html>
 %>
