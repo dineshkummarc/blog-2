@@ -1,3 +1,4 @@
+<%
 <html>
 <head>
 <title>JS Blog</title>
@@ -10,12 +11,18 @@
 </div>
 <div class="clear"></div>
 <div id="posts">
-<? context.posts.forEach(function (post) { ?>
+%>
+
+context.posts.forEach (post) -> 
+	<%
 <div class="post">
-<h2><? echo(post.title); ?></h2>
-<div><? echo(post.message); ?></div>
+<h2>#{post.title}</h2>
+<div>#{post.message}</div>
 </div>
-<? }); ?>
+	%>
+
+<%
 </div>
 </body>
 </html>
+%>
