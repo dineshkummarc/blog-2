@@ -7,7 +7,7 @@ class Blog extends HTTPApplication
 			load "#{@path}/httpdocs/js/showdown.js"
 			load "#{@path}/httpdocs/js/markdown.js"
 
-		@addView 'index', '/views/index.jsv'
+		@addView 'index', 'views/index.jsv'
 
 		@addRoute /^\/$/, (request) ->
 			db = new Blog.DB @settings
@@ -25,12 +25,7 @@ class Blog extends HTTPApplication
 	processRequest: (request) ->
 		if !@route request
 			/* Serve static file, if it exists */
-			file = new File @getFilePath "/httpdocs#{request.resource}"
-			if file.exists()
-				@serveFile request, file
-				return
-
-			@sendResponseHeaders 404, {}, request, 0
+			@serveRoot request, 'httpdocs'
 
 	processPost: (request) ->
 		data = request.data or {}
