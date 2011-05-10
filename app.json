@@ -1,5 +1,12 @@
 {
 	"name": "Blog",
-	"hosts": ["blog.loc", "www.blog.loc"],
+	"hosts": [
+		{
+			"hostname": "blog.loc",
+			"ports": [1234]
+		}, {
+			"hostname": "www.blog.loc",
+			"ports": [1234]
+		}
 	"application": "main.coffee"
 }
