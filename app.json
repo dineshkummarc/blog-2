@@ -8,5 +8,6 @@
 			"hostname": "www.blog.loc",
 			"ports": [1234]
 		}
+	],
 	"application": "main.coffee"
 }
