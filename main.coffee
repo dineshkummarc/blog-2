@@ -1,6 +1,6 @@
 class Blog extends HTTPApplication
 	init: ->
-		load "#{@path}/lib/database.js"
+		load "#{@path}/lib/database.coffee"
 		@settings = JSON.parse readFile "#{@path}/conf/settings.json"
 
 		if !markdownToHtml?
